@@ -23,6 +23,8 @@
 #define BIG_ACT_UP_PIN 13
 #define BIG_ACT_DOWN_PIN 14
 
+// humidity/temp sensor on pins 18 SDA/19 SCL
+
 #define SMALL_ACT_UP_PIN 20
 #define SMALL_ACT_DOWN_PIN 21
 
@@ -238,7 +240,7 @@ void loop()
   if (ACAN_T4::can3.receive (message_received)) {
     #if DEBUG == 2 // print the message for debugging
     Serial.println("Message received");
-      if(message_received.id == 0x03) {
+      if(message_received.id == SCIENCE_ID) {
         Serial.print("ID=");
         Serial.print(message_received.id);
         Serial.print(" msg = ");
@@ -268,7 +270,7 @@ void loop()
 
   unsigned long curr_time = millis();
   // stop all motors after 1 second of no messages
-  if (curr_time - stopTimeout >= 5000) {
+  if (curr_time - stopTimeout >= 1000) {
     stopTimeout = millis();
     drill.write(90);
 

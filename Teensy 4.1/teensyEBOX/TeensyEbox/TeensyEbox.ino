@@ -63,7 +63,7 @@ CANMessage message;
 CANMessage recMessage;
 
 // SET DEBUG == 1: PRINT ETHERNET MSGS, DEBUG == 2: PRINT ARM, DEBUG == 3: PRINT SCIENCE
-#define DEBUG 2 // set to 0 to avoid compiling print statements (will save space, don't need to print if running on rover)
+#define DEBUG 1 // set to 0 to avoid compiling print statements (will save space, don't need to print if running on rover)
 
 // UDP IDs
 #define WHEEL 0x01 // Wheels are [0x01, 0x01]

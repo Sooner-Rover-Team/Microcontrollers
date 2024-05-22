@@ -12,7 +12,7 @@ void setup() {
   Serial.println("starting");
   // pinMode(5, OUTPUT);
   // pinMode(6, OUTPUT);
-  servo1.attach(6, 1000, 2000); // min/max in microseconds, 900-2100
+  servo1.attach(7, 1000, 2000); // min/max in microseconds, 900-2100
   // servo2.attach(21, 1000, 2000);
   // servo3.attach(3, 1000, 2000);
   // servo1.write(90);

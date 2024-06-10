@@ -63,7 +63,7 @@ CANMessage message;
 CANMessage recMessage;
 
 // SET DEBUG == 1: PRINT ETHERNET MSGS, DEBUG == 2: PRINT ARM, DEBUG == 3: PRINT SCIENCE
-#define DEBUG 1 // set to 0 to avoid compiling print statements (will save space, don't need to print if running on rover)
+#define DEBUG -1 // set to 0 to avoid compiling print statements (will save space, don't need to print if running on rover)
 
 // UDP IDs
 #define WHEEL 0x01 // Wheels are [0x01, 0x01]
@@ -108,7 +108,7 @@ bool proportionalControl = true;
 unsigned long lastLoop = 0; // milli time of last loop
 double deltaLoop = 0.0; // seconds since last loop
 double Kp = 3.5; // proportional change between target and current
-double Kp_thresh = 0.4; // % of wheel speed to apply proportional control under
+double Kp_thresh = 0.6; // % of wheel speed to apply proportional control under
 double error[6]; // stores error of each wheel for PID calculations
 
 // define time in microseconds of width of pulse
@@ -265,14 +265,14 @@ void sendSensorData(CANMessage sensormsg) {
   msg[1] = sensormsg.data[1]; // humidity
   msg[2] = sensormsg.data[2]; // methane
   msg[3] = sensormsg.data[3]; // methane
-  #if DEBUG == 2 || DEBUG == 0
-    Serial.print("Science sensor udp: ");
-    for (int i=0; i < 4; i++) {
-      Serial.print(msg[i], DEC);
-      Serial.print(" ");
-    }
-    Serial.println();
-  #endif
+  // #if DEBUG == 2 || DEBUG == 0
+  //   Serial.print("Science sensor udp: ");
+  //   for (int i=0; i < 4; i++) {
+  //     Serial.print(msg[i], DEC);
+  //     Serial.print(" ");
+  //   }
+  //   Serial.println();
+  // #endif
   Udp.write(msg, 4);
   Udp.endPacket();
   return;
@@ -325,19 +325,19 @@ void sendScienceCAN(unsigned char msg[], int msgSize) {
     Serial.println("science can time");
   #endif
 
-  if(msgSize == 7) {
+  if(msgSize == 8) {
     checkSum = 0;
-    for(int i=1; i<6; i++) { 
+    for(int i=1; i<7; i++) { 
         checkSum += msg[i];
     }
     checkSum = checkSum & 0xff;
     Serial.println(checkSum);
-    Serial.println(uint8_t(msg[6]));
+    Serial.println(uint8_t(msg[7]));
 
-    if(checkSum == uint8_t(msg[6])) {
+    if(checkSum == uint8_t(msg[7])) {
       message.id = SCIENCE; 
-      message.len = 5;
-      memcpy(message.data, &msg[1], 5); // actuator1, actuator2, drill, slide rail, panoramic
+      message.len = 6;
+      memcpy(message.data, &msg[1], 6); // actuator1, actuator2, drill, slide rail, panoramic
       bool ok = ACAN_T4::can3.tryToSend(message);
       if(ok && DEBUG) {
         Serial.println("Science sent");

@@ -14,7 +14,7 @@
  */
 
 // Set equal to 1 for serial debugging
-#define DEBUG 0
+#define DEBUG 2
 // Message ID for science pckg
 #define SCIENCE_ID 0x03
 
@@ -136,13 +136,13 @@ void sendSensorData() {
   data[2] = sensor / 256;
   data[3] = sensor % 256;
 
-  #if DEBUG == 1
-    for(int i=0; i<4; i++) {
-      Serial.print(uint64_t(data[i]));
-      Serial.print(" ");
-    }
-    Serial.println();
-  #endif
+  // #if DEBUG == 1
+  //   for(int i=0; i<4; i++) {
+  //     Serial.print(uint64_t(data[i]));
+  //     Serial.print(" ");
+  //   }
+  //   Serial.println();
+  // #endif
   
   // Ensure correct endianness if needed
   
@@ -253,7 +253,7 @@ void loop()
     #endif
 
     if(message_received.id == SCIENCE_ID) { // science id = 0x03
-      if(message_received.len == 5) { // CAN performs it's own checksum so no need to check that
+      if(message_received.len == 6) { // CAN performs it's own checksum so no need to check that
         updateMotors(message_received);
       }
     }

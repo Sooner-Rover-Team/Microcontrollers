@@ -14,9 +14,10 @@ Message Structures:
 - Arm = [0x02, bicep, forearm, base, wrist_pitch, wrist_roll, claw, checkSum]
 - Science = [0x03, big_actuator, drill, small_actuator, test_tubes, camera_servo, checkSum]
 
-### CAN
+### CAN 
+[Teensy CAN Library](https://github.com/pierremolinaro/acan-t4)
 
-Controller-Area-Network (CAN) is the current form of wired data transfer among microcontrollers on the rover. These CAN messages are shared amongst the entire network, and any microcontroller is capable of send/recv. The CAN msg ID determines the message priority. If two messages are being sent at the same time on the wire bus, the message with the lower ID number will be sent and the higher ID message will wait until the lower ID messages are done sending. This is called CAN arbitration.
+Controller-Area-Network (CAN) is the current form of wired data transfer among microcontrollers on the rover (the hardware module is named FlexCAN, other implementations of CAN also exist). These CAN messages are shared amongst the entire network, and any microcontroller is capable of send/recv. The CAN msg ID determines the message priority. If two messages are being sent at the same time on the wire bus, the message with the lower ID number will be sent and the higher ID message will wait until the lower ID messages are done sending. This is called CAN arbitration.
 
 Message Structures:
 
